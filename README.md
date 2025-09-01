@@ -1,7 +1,7 @@
 # data-lemur
 This is a collection of all exercises of [Data Lemur](https://datalemur.com/questions) online interview questions.
 
-This repository contains all exercises made on DataLemur while learning SQL to track progress. 
+This repository contains all free exercises made on DataLemur while learning SQL to track progress. 
 
 The SQL files will be named following this path: 
 __company_excercise-title.sql__
