@@ -42,21 +42,23 @@ SELECT
     WHEN pay.paid IS NOT NULL AND ad.status = 'CHURN' THEN 'RESURRECT'
     WHEN pay.paid IS NOT NULL AND ad.status IS NULL THEN 'NEW'
     ELSE NULL
-  END AS updated_status
+  END AS new_status
 FROM advertiser ad
 FULL JOIN daily_pay pay
   ON ad.user_id = pay.user_id 
 ORDER BY 1;
 
-SELECT
+/* or */
+
+SELECT  
   COALESCE(ad.user_id, pay.user_id) AS user_id,
   CASE
-    WHEN ad.user_id IS NULL THEN 'NEW'
-    WHEN pay.user_id IS NULL THEN 'CHURN'
-    WHEN ad.status = 'CHURN' THEN 'RESURRECT'
-    ELSE 'EXISTING'
-  END AS updated_status
+    WHEN pay.user_id IS NULL THEN 'CHURN'          
+    WHEN pay.user_id IS NOT NULL AND ad.status = 'CHURN' THEN 'RESURRECT'  
+    WHEN pay.user_id IS NOT NULL AND ad.user_id IS NULL THEN 'NEW'         
+    ELSE 'EXISTING'   
+  END AS new_status                
 FROM advertiser ad
 FULL JOIN daily_pay pay
-  ON ad.user_id = pay.user_id 
-ORDER BY 1;
+  ON ad.user_id = pay.user_id
+ORDER BY user_id;
