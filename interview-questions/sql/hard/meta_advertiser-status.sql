@@ -48,3 +48,15 @@ FULL JOIN daily_pay pay
   ON ad.user_id = pay.user_id 
 ORDER BY 1;
 
+SELECT
+  COALESCE(ad.user_id, pay.user_id) AS user_id,
+  CASE
+    WHEN ad.user_id IS NULL THEN 'NEW'
+    WHEN pay.user_id IS NULL THEN 'CHURN'
+    WHEN ad.status = 'CHURN' THEN 'RESURRECT'
+    ELSE 'EXISTING'
+  END AS updated_status
+FROM advertiser ad
+FULL JOIN daily_pay pay
+  ON ad.user_id = pay.user_id 
+ORDER BY 1;
